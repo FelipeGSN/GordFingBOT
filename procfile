@@ -1,1 +1,1 @@
-worker: node ./src/master.js
+stater: node ./src/master.js
