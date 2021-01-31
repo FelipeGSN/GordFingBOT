@@ -141,14 +141,14 @@ bot.Client.on("message", async (msg) => {
                         vChannel.leave()
 
                         msg.channel.send(new MessageEmbed()
-                        .setAuthor("GordFing", bot.Client.user.avatarURL({ dynamic: true }), "https://discord.com/api/oauth2/authorize?client_id=764227613001908275&permissions=8&scope=bot")
+                          .setAuthor("GordFing", bot.Client.user.avatarURL({ dynamic: true }), "https://discord.com/api/oauth2/authorize?client_id=764227613001908275&permissions=8&scope=bot")
                           .setTitle("GORDFING")
-                        .setDescription(`Eu sai do canal de por inatividade!`)
-                        .setTimestamp()
-                        .setFooter(`Comando solicitado por: ${msg.author.tag}`)
-                        .setColor("#0000FF")
+                          .setDescription(`Eu sai do canal de por inatividade!`)
+                          .setTimestamp()
+                          .setFooter(`Comando solicitado por: ${msg.author.tag}`)
+                          .setColor("#0000FF")
                         );
-                      }, 1000 * 60);
+                      }, 60000);
 
                       msg.channel.send(new MessageEmbed()
                         .setAuthor("GordFing", bot.Client.user.avatarURL({ dynamic: true }), "https://discord.com/api/oauth2/authorize?client_id=764227613001908275&permissions=8&scope=bot")
