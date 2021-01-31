@@ -469,7 +469,7 @@ bot.Client.on("message", async (msg) => {
         m.edit(new MessageEmbed()
           .setAuthor("GordFing", bot.Client.user.avatarURL({ dynamic: true }), "https://discord.com/api/oauth2/authorize?client_id=764227613001908275&permissions=8&scope=bot")
           .setTitle("Ping! 💡 Pong! 🏓")
-          .setDescription(`*Gateway Ping:* **${m.createdTimestamp - msg.createdTimestamp}ms**\n***API Ping:*** **${Math.round(bot.Client.ws.ping)}ms**`)
+          .setDescription(`*Gateway Ping:* **${m.createdTimestamp - msg.createdTimestamp}ms**\n*API Ping:* **${Math.round(bot.Client.ws.ping)}ms**`)
           .setTimestamp()
           .setFooter(`Comando solicitado por: ${msg.author.tag}`)
           .setColor("#00FF00")
