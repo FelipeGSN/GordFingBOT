@@ -20,7 +20,7 @@ bot.Client.once("ready", (e) => {
 
   bot.Client.setInterval(() => {
     const activityNameArray = [
-      "Criador: @FelipeTheFat#6869",
+      "Criador: @FelpaByte#6869",
       "GordFing!🍪",
       `Servidores: ${bot.Client.guilds.cache.size}`,
       `Usuários: ${bot.Client.users.cache.size}`,
