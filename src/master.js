@@ -453,7 +453,7 @@ bot.Client.on("message", async (msg) => {
 
           disp.on("start", () => {
             msg.delete()
-            vChannel.guild.voice.setSelfDeaf(true)
+            msg.guild.voice.setSelfDeaf(true)
 
             msg.channel.send(new MessageEmbed()
               .setAuthor("GordFing", bot.Client.user.avatarURL({ dynamic: true }), "https://discord.com/api/oauth2/authorize?client_id=764227613001908275&permissions=8&scope=bot")
@@ -467,7 +467,7 @@ bot.Client.on("message", async (msg) => {
           })
 
           disp.on("close", () => {
-            vChannel.guild.voice.setSelfDeaf(false)
+            msg.guild.voice.setSelfDeaf(false)
 
             msg.channel.send(new MessageEmbed()
               .setAuthor("GordFing", bot.Client.user.avatarURL({ dynamic: true }), "https://discord.com/api/oauth2/authorize?client_id=764227613001908275&permissions=8&scope=bot")
