@@ -1,0 +1,21 @@
+{
+  "name": "gordfing",
+  "version": "0.1.0",
+  "main": "src/master.js",
+  "scripts": {
+    "dev": "nodemon src/master"
+  },
+  "dependencies": {
+    "@discordjs/opus": "latest",
+    "discord.js": "latest",
+    "dotenv": "latest",
+    "ytdl-core": "latest",
+    "ytsr": "lastest"
+  },
+  "devDependencies": {
+    "nodemon": "latest"
+  },
+  "license": "Unlicense",
+  "author": "FelipeGS",
+  "private": true
+}
