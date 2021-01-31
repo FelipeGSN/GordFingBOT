@@ -4,7 +4,7 @@
   "main": "src/master.js",
   "scripts": {
     "dev": "nodemon src/master",
-    "start": "node src/master.js"
+    "start": "node src/master"
   },
   "dependencies": {
     "@discordjs/opus": "^0.4.0",
