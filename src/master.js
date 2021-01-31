@@ -51,6 +51,24 @@ bot.Client.on("message", async (msg) => {
   if (msg.author.bot) return
   if (!msg.guild) return
 
+  // Public funtions
+  function format(time) {
+    // Hours, minutes and seconds
+    var hrs = ~~(time / 3600);
+    var mins = ~~((time % 3600) / 60);
+    var secs = ~~time % 60;
+
+    // Output like "1:01" or "4:03:59" or "123:03:59"
+    var ret = "";
+    if (hrs > 0) {
+        ret += "" + hrs + ":" + (mins < 10 ? "0" : "");
+    }
+    ret += "" + mins + ":" + (secs < 10 ? "0" : "");
+    ret += "" + secs;
+    return ret;
+  }
+
+
   // [MUSIC] "gof!play [URL/NAME]" command
   if (msg.cleanContent.startsWith(bot.Config.BOT_PREFIX + "play")) {
     const vChannel = msg.member.voice.channel
@@ -131,7 +149,7 @@ bot.Client.on("message", async (msg) => {
                             .setAuthor("GordFing", bot.Client.user.avatarURL({ dynamic: true }), "https://discord.com/api/oauth2/authorize?client_id=764227613001908275&permissions=8&scope=bot")
                             .setTitle("MUSICA!")
                             .setImage(song.image)
-                            .setDescription(`*Titulo:* **${song.title}**\n*Visualizações:* **${song.views}**\n*Avaliações:*\n👍 **${song.likes}** | 👎 **${song.dislikes}**\n\n*Canal:* **${song.channel}**\n*Duração:* **${song.seconds} segundo(s)**\n*Link:* **${song.url}**`)
+                            .setDescription(`*Titulo:* **${song.title}**\n*Visualizações:* **${song.views}**\n*Avaliações:*\n👍 **${song.likes}** | 👎 **${song.dislikes}**\n\n*Canal:* **${song.channel}**\n*Duração:* **${format(song.seconds)} min(s) (${song.seconds} segundo(s))**\n*Link:* **${song.url}**`)
                             .setTimestamp()
                             .setFooter(`Comando solicitado por: ${msg.author.tag}`)
                             .setColor("#00FF00")
