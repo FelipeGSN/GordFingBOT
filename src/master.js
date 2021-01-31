@@ -159,7 +159,7 @@ bot.Client.on("message", async (msg) => {
                               .setFooter(`Comando solicitado por: ${msg.author.tag}`)
                               .setColor("#0000FF")
                             );
-                          }, 1000 * 4);
+                          }, 1000 * 60 * 15);
                         });
                       } else if (r.emoji.name === "2️⃣") {
                         m.delete();
@@ -204,6 +204,19 @@ bot.Client.on("message", async (msg) => {
                             .setFooter(`Comando solicitado por: ${msg.author.tag}`)
                             .setColor("#0000FF")
                           );
+
+                          bot.Client.setTimeout(() => {
+                            vChannel.leave()
+                            msg.channel.send(new MessageEmbed()
+                              .setAuthor("GordFing", bot.Client.user.avatarURL({ dynamic: true }), "https://discord.com/api/oauth2/authorize?client_id=764227613001908275&permissions=8&scope=bot")
+                              .setTitle("MUSICA!")
+                              .setImage(song.image)
+                              .setDescription(`***Eu sai do canal de voz por inatividade!***\n\n*Use:* **${bot.Config.BOT_PREFIX}search [pesq]**\n*Use:* **${bot.Config.BOT_PREFIX}play [link]**`)
+                              .setTimestamp()
+                              .setFooter(`Comando solicitado por: ${msg.author.tag}`)
+                              .setColor("#0000FF")
+                            );
+                          }, 1000 * 60 * 15);
                         });
                       } else if (r.emoji.name === "3️⃣") {
                         m.delete();
@@ -248,6 +261,19 @@ bot.Client.on("message", async (msg) => {
                             .setFooter(`Comando solicitado por: ${msg.author.tag}`)
                             .setColor("#0000FF")
                           );
+
+                          bot.Client.setTimeout(() => {
+                            vChannel.leave()
+                            msg.channel.send(new MessageEmbed()
+                              .setAuthor("GordFing", bot.Client.user.avatarURL({ dynamic: true }), "https://discord.com/api/oauth2/authorize?client_id=764227613001908275&permissions=8&scope=bot")
+                              .setTitle("MUSICA!")
+                              .setImage(song.image)
+                              .setDescription(`***Eu sai do canal de voz por inatividade!***\n\n*Use:* **${bot.Config.BOT_PREFIX}search [pesq]**\n*Use:* **${bot.Config.BOT_PREFIX}play [link]**`)
+                              .setTimestamp()
+                              .setFooter(`Comando solicitado por: ${msg.author.tag}`)
+                              .setColor("#0000FF")
+                            );
+                          }, 1000 * 60 * 15);
                         });
                       } else if (r.emoji.name === "4️⃣") {
                         m.delete();
@@ -292,6 +318,19 @@ bot.Client.on("message", async (msg) => {
                             .setFooter(`Comando solicitado por: ${msg.author.tag}`)
                             .setColor("#0000FF")
                           );
+
+                          bot.Client.setTimeout(() => {
+                            vChannel.leave()
+                            msg.channel.send(new MessageEmbed()
+                              .setAuthor("GordFing", bot.Client.user.avatarURL({ dynamic: true }), "https://discord.com/api/oauth2/authorize?client_id=764227613001908275&permissions=8&scope=bot")
+                              .setTitle("MUSICA!")
+                              .setImage(song.image)
+                              .setDescription(`***Eu sai do canal de voz por inatividade!***\n\n*Use:* **${bot.Config.BOT_PREFIX}search [pesq]**\n*Use:* **${bot.Config.BOT_PREFIX}play [link]**`)
+                              .setTimestamp()
+                              .setFooter(`Comando solicitado por: ${msg.author.tag}`)
+                              .setColor("#0000FF")
+                            );
+                          }, 1000 * 60 * 15);
                         });
                       } else if (r.emoji.name === "5️⃣") {
                         m.delete();
@@ -336,6 +375,19 @@ bot.Client.on("message", async (msg) => {
                             .setFooter(`Comando solicitado por: ${msg.author.tag}`)
                             .setColor("#0000FF")
                           );
+
+                          bot.Client.setTimeout(() => {
+                            vChannel.leave()
+                            msg.channel.send(new MessageEmbed()
+                              .setAuthor("GordFing", bot.Client.user.avatarURL({ dynamic: true }), "https://discord.com/api/oauth2/authorize?client_id=764227613001908275&permissions=8&scope=bot")
+                              .setTitle("MUSICA!")
+                              .setImage(song.image)
+                              .setDescription(`***Eu sai do canal de voz por inatividade!***\n\n*Use:* **${bot.Config.BOT_PREFIX}search [pesq]**\n*Use:* **${bot.Config.BOT_PREFIX}play [link]**`)
+                              .setTimestamp()
+                              .setFooter(`Comando solicitado por: ${msg.author.tag}`)
+                              .setColor("#0000FF")
+                            );
+                          }, 1000 * 60 * 15);
                         });
                       };
                     });
