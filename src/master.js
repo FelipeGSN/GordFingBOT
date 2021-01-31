@@ -459,7 +459,7 @@ bot.Client.on("message", async (msg) => {
               .setAuthor("GordFing", bot.Client.user.avatarURL({ dynamic: true }), "https://discord.com/api/oauth2/authorize?client_id=764227613001908275&permissions=8&scope=bot")
               .setTitle("MUSICA!")
               .setImage(song.image)
-              .setDescription(`*Titulo:* **${song.title}**\n*Visualizações:* **${song.views}**\n*Avaliações:*\n👍 **${song.likes}** | 👎 **${song.dislikes}**\n\n*Canal:* **${song.channel}**\n*Duração:* **${song.seconds} segundo(s)**\n*Link:* **${song.url}**`)
+              .setDescription(`*Titulo:* **${song.title}**\n*Visualizações:* **${song.views}**\n*Avaliações:*\n👍 **${song.likes}** | 👎 **${song.dislikes}**\n\n*Canal:* **${song.channel}**\n*Duração:* **${format(song.seconds)} min(s) (${song.seconds} segundo(s))**\n*Link:* **${song.url}**`)
               .setTimestamp()
               .setFooter(`Comando solicitado por: ${msg.author.tag}`)
               .setColor("#00FF00")
