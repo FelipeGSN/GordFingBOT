@@ -156,7 +156,7 @@ bot.Client.on("message", async (msg) => {
                           )
                         })
 
-                        disp.on("close", () => {
+                        disp.on("finish", () => {
                           msg.guild.voice.setSelfDeaf(false)
 
                           msg.channel.send(new MessageEmbed()
@@ -217,7 +217,7 @@ bot.Client.on("message", async (msg) => {
                           )
                         })
 
-                        disp.on("close", () => {
+                        disp.on("finish", () => {
                           msg.guild.voice.setSelfDeaf(false)
 
                           msg.channel.send(new MessageEmbed()
@@ -278,7 +278,7 @@ bot.Client.on("message", async (msg) => {
                           )
                         })
 
-                        disp.on("close", () => {
+                        disp.on("finish", () => {
                           msg.guild.voice.setSelfDeaf(false)
 
                           msg.channel.send(new MessageEmbed()
@@ -339,7 +339,7 @@ bot.Client.on("message", async (msg) => {
                           )
                         })
 
-                        disp.on("close", () => {
+                        disp.on("finish", () => {
                           msg.guild.voice.setSelfDeaf(false)
 
                           msg.channel.send(new MessageEmbed()
@@ -400,7 +400,7 @@ bot.Client.on("message", async (msg) => {
                           )
                         })
 
-                        disp.on("close", () => {
+                        disp.on("finish", () => {
                           msg.guild.voice.setSelfDeaf(false)
 
                           msg.channel.send(new MessageEmbed()
@@ -466,7 +466,7 @@ bot.Client.on("message", async (msg) => {
             )
           })
 
-          disp.on("close", () => {
+          disp.on("finish", () => {
             msg.guild.voice.setSelfDeaf(false)
 
             msg.channel.send(new MessageEmbed()
@@ -477,7 +477,7 @@ bot.Client.on("message", async (msg) => {
               .setTimestamp()
               .setFooter(`Comando solicitado por: ${msg.author.tag}`)
               .setColor("#0000FF")
-            )
+            );
 
             bot.Client.setTimeout(() => {
               vChannel.leave()
@@ -489,7 +489,7 @@ bot.Client.on("message", async (msg) => {
                 .setFooter(`Comando solicitado por: ${msg.author.tag}`)
                 .setColor("#0000FF")
               )
-            }, 1000 * 60 * 15)
+            }, 1000 * 60 * 5)
           })
         }
       } else {
