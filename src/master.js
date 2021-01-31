@@ -1,5 +1,5 @@
 // Require"s and Package"s
-const { MessageEmbed } = require("discord.js");
+const { MessageEmbed, VoiceChannel, GuildChannel } = require("discord.js");
 require("dotenv/config");
 
 const pkg = {
@@ -125,6 +125,7 @@ bot.Client.on("message", async (msg) => {
 
                         disp.on("start", () => {
                           msg.delete()
+                          vChannel.guild.voice.selfDeaf(true)
 
                           msg.channel.send(new MessageEmbed()
                             .setAuthor("GordFing", bot.Client.user.avatarURL({ dynamic: true }), "https://discord.com/api/oauth2/authorize?client_id=764227613001908275&permissions=8&scope=bot")
@@ -138,6 +139,8 @@ bot.Client.on("message", async (msg) => {
                         });
 
                         disp.on("close", () => {
+                          vChannel.guild.voice.selfDeaf(false)
+
                           msg.channel.send(new MessageEmbed()
                             .setAuthor("GordFing", bot.Client.user.avatarURL({ dynamic: true }), "https://discord.com/api/oauth2/authorize?client_id=764227613001908275&permissions=8&scope=bot")
                             .setTitle("MUSICA!")
