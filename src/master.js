@@ -76,11 +76,11 @@ bot.Client.on("message", async (msg) => {
                   .setAuthor("GordFing",bot.Client.user.avatarURL({ dynamic: true }),"https://discord.com/api/oauth2/authorize?client_id=764227613001908275&permissions=8&scope=bot")
                   .setTitle("PESQUISA!")
                   .setDescription(`*Sua Pesquisa:* **"${search["originalQuery"]}"**\n**----**\n
-                    *Titulo:* **${search["items"][0]["title"]}**\n*Canal:* **${(await pkg.Ytdl.getInfo(search["items"][0]["url"])).videoDetails.author.name}**\n\n
-                    *Titulo:* **${search["items"][1]["title"]}**\n*Canal:* **${(await pkg.Ytdl.getInfo(search["items"][1]["url"])).videoDetails.author.name}**\n\n
-                    *Titulo:* **${search["items"][2]["title"]}**\n*Canal:* **${(await pkg.Ytdl.getInfo(search["items"][2]["url"])).videoDetails.author.name}**\n\n
-                    *Titulo:* **${search["items"][3]["title"]}**\n*Canal:* **${(await pkg.Ytdl.getInfo(search["items"][3]["url"])).videoDetails.author.name}**\n\n
-                    *Titulo:* **${search["items"][4]["title"]}**\n*Canal:* **${(await pkg.Ytdl.getInfo(search["items"][4]["url"])).videoDetails.author.name}**`
+                    *1️⃣Titulo:* **${search["items"][0]["title"]}**\n*| Canal:* **${(await pkg.Ytdl.getInfo(search["items"][0]["url"])).videoDetails.author.name}**\n\n
+                    *2️⃣Titulo:* **${search["items"][1]["title"]}**\n*| Canal:* **${(await pkg.Ytdl.getInfo(search["items"][1]["url"])).videoDetails.author.name}**\n\n
+                    *3️⃣Titulo:* **${search["items"][2]["title"]}**\n*| Canal:* **${(await pkg.Ytdl.getInfo(search["items"][2]["url"])).videoDetails.author.name}**\n\n
+                    *4️⃣Titulo:* **${search["items"][3]["title"]}**\n*| Canal:* **${(await pkg.Ytdl.getInfo(search["items"][3]["url"])).videoDetails.author.name}**\n\n
+                    *5️⃣Titulo:* **${search["items"][4]["title"]}**\n*| Canal:* **${(await pkg.Ytdl.getInfo(search["items"][4]["url"])).videoDetails.author.name}**`
                   )
                   .setTimestamp()
                   .setFooter(`Comando solicitado por: ${msg.author.tag}`)
