@@ -1,1 +1,1 @@
-worker: node src/master
+worker: node ./src/master.js/
