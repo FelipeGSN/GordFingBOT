@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "main": "src/master.js",
   "scripts": {
-    "dev": "nodemon src/master"
+    "dev": "nodemon src/master",
+    "start": "node src/master.js"
   },
   "dependencies": {
     "@discordjs/opus": "^0.4.0",
