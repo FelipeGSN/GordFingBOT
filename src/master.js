@@ -73,7 +73,7 @@ bot.Client.on("message", async (msg) => {
 
               m.edit(
                 new MessageEmbed()
-                  .setAuthor("GordFing",bot.Client.user.avatarURL({ dynamic: true }),"https://discord.com/api/oauth2/authorize?client_id=764227613001908275&permissions=8&scope=bot")
+                  .setAuthor("GordFing", bot.Client.user.avatarURL({ dynamic: true }), "https://discord.com/api/oauth2/authorize?client_id=764227613001908275&permissions=8&scope=bot")
                   .setTitle("PESQUISA!")
                   .setDescription(`*Sua Pesquisa:* **"${search["originalQuery"]}"**\n**----**\n
                     *1️⃣Titulo:* **${search["items"][0]["title"]}**\n* Canal:* **${(await pkg.Ytdl.getInfo(search["items"][0]["url"])).videoDetails.author.name}**\n\n
@@ -90,254 +90,256 @@ bot.Client.on("message", async (msg) => {
                   .then(() => m.react("2️⃣"))
                   .then(() => m.react("3️⃣"))
                   .then(() => m.react("4️⃣"))
-                  .then(() => m.react("5️⃣"));
-
-                const filter = (r, u) => {
-                  return (
-                    ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣"].includes(r.emoji.name) &&
-                    u.id === msg.author.id
-                  );
-                };
-
-                m.awaitReactions(filter, { max: 1 }).then(async (c) => {
-                  const r = c.first();
-                  const connect = await vChannel.join()
-
-                  if (r.emoji.name === "1️⃣") {
-                    m.delete();
-
-                    const songInfo = await pkg.Ytdl.getInfo(search["items"][0]["url"]);
-                    const song = {
-                      title: songInfo.videoDetails.title,
-                      views: songInfo.videoDetails.viewCount,
-                      likes: songInfo.videoDetails.likes,
-                      dislikes: songInfo.videoDetails.dislikes,
-                      channel: songInfo.videoDetails.author.name,
-                      seconds: songInfo.videoDetails.lengthSeconds,
-                      image: songInfo.videoDetails.thumbnails[songInfo.videoDetails.thumbnails.length-1]["url"],
-                      url: songInfo.videoDetails.video_url
+                  .then(() => m.react("5️⃣"))
+                  .then(() => {
+                    const filter = (r, u) => {
+                      return (
+                        ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣"].includes(r.emoji.name) &&
+                        u.id === msg.author.id
+                      );
                     };
 
-                    const disp = connect.play(pkg.Ytdl(search["items"][0]["url"], {
-                      filter: "audioonly",
-                      quality: "highestaudio",
-                    }));
+                    m.awaitReactions(filter, { max: 1 }).then(async (c) => {
+                      const r = c.first();
+                      const connect = await vChannel.join()
 
-                    disp.on("start", () => {
-                      msg.delete()
-                      msg.channel.send(new MessageEmbed()
-                        .setAuthor("GordFing", bot.Client.user.avatarURL({ dynamic: true }), "https://discord.com/api/oauth2/authorize?client_id=764227613001908275&permissions=8&scope=bot")
-                        .setTitle("MUSICA!")
-                        .setImage(song.image)
-                        .setDescription(`*Titulo:* **${song.title}**\n*Visualizações:* **${song.views}**\n*Avaliações:*\n👍 **${song.likes}** | 👎 **${song.dislikes}**\n\n*Canal:* **${song.channel}**\n*Duração:* **${song.seconds} segundo(s)**\n*Link:* **${song.url}**`)
-                        .setTimestamp()
-                        .setFooter(`Comando solicitado por: ${msg.author.tag}`)
-                        .setColor("#00FF00")
-                      );
+                      if (r.emoji.name === "1️⃣") {
+                        m.delete();
+
+                        const songInfo = await pkg.Ytdl.getInfo(search["items"][0]["url"]);
+                        const song = {
+                          title: songInfo.videoDetails.title,
+                          views: songInfo.videoDetails.viewCount,
+                          likes: songInfo.videoDetails.likes,
+                          dislikes: songInfo.videoDetails.dislikes,
+                          channel: songInfo.videoDetails.author.name,
+                          seconds: songInfo.videoDetails.lengthSeconds,
+                          image: songInfo.videoDetails.thumbnails[songInfo.videoDetails.thumbnails.length - 1]["url"],
+                          url: songInfo.videoDetails.video_url
+                        };
+
+                        const disp = connect.play(pkg.Ytdl(search["items"][0]["url"], {
+                          filter: "audioonly",
+                          quality: "highestaudio",
+                        }));
+
+                        disp.on("start", () => {
+                          msg.delete()
+
+                          msg.channel.send(new MessageEmbed()
+                            .setAuthor("GordFing", bot.Client.user.avatarURL({ dynamic: true }), "https://discord.com/api/oauth2/authorize?client_id=764227613001908275&permissions=8&scope=bot")
+                            .setTitle("MUSICA!")
+                            .setImage(song.image)
+                            .setDescription(`*Titulo:* **${song.title}**\n*Visualizações:* **${song.views}**\n*Avaliações:*\n👍 **${song.likes}** | 👎 **${song.dislikes}**\n\n*Canal:* **${song.channel}**\n*Duração:* **${song.seconds} segundo(s)**\n*Link:* **${song.url}**`)
+                            .setTimestamp()
+                            .setFooter(`Comando solicitado por: ${msg.author.tag}`)
+                            .setColor("#00FF00")
+                          )
+                        });
+
+                        disp.on("close", () => {
+                          msg.channel.send(new MessageEmbed()
+                            .setAuthor("GordFing", bot.Client.user.avatarURL({ dynamic: true }), "https://discord.com/api/oauth2/authorize?client_id=764227613001908275&permissions=8&scope=bot")
+                            .setTitle("MUSICA!")
+                            .setImage(song.image)
+                            .setDescription(`***Musica finalizada com sucesso!***\n\n*Use:* **${bot.Config.BOT_PREFIX}search [pesq]**\n*Use:* **${bot.Config.BOT_PREFIX}play [link]**`)
+                            .setTimestamp()
+                            .setFooter(`Comando solicitado por: ${msg.author.tag}`)
+                            .setColor("#0000FF")
+                          );
+
+                          bot.Client.setTimeout(() => {
+                            vChannel.leave()
+                            msg.channel.send(new MessageEmbed()
+                              .setAuthor("GordFing", bot.Client.user.avatarURL({ dynamic: true }), "https://discord.com/api/oauth2/authorize?client_id=764227613001908275&permissions=8&scope=bot")
+                              .setTitle("MUSICA!")
+                              .setImage(song.image)
+                              .setDescription(`***Eu sai do canal de voz por inatividade!***\n\n*Use:* **${bot.Config.BOT_PREFIX}search [pesq]**\n*Use:* **${bot.Config.BOT_PREFIX}play [link]**`)
+                              .setTimestamp()
+                              .setFooter(`Comando solicitado por: ${msg.author.tag}`)
+                              .setColor("#0000FF")
+                            );
+                          }, 1000 * 4);
+                        });
+                      } else if (r.emoji.name === "2️⃣") {
+                        m.delete();
+
+                        const songInfo = await pkg.Ytdl.getInfo(search["items"][1]["url"]);
+                        const song = {
+                          title: songInfo.videoDetails.title,
+                          views: songInfo.videoDetails.viewCount,
+                          likes: songInfo.videoDetails.likes,
+                          dislikes: songInfo.videoDetails.dislikes,
+                          channel: songInfo.videoDetails.author.name,
+                          seconds: songInfo.videoDetails.lengthSeconds,
+                          image: songInfo.videoDetails.thumbnails[songInfo.videoDetails.thumbnails.length - 1]["url"],
+                          url: songInfo.videoDetails.video_url
+                        };
+
+                        const disp = connect.play(pkg.Ytdl(search["items"][1]["url"], {
+                          filter: "audioonly",
+                          quality: "highestaudio",
+                        }));
+
+                        disp.on("start", () => {
+                          msg.delete()
+                          msg.channel.send(new MessageEmbed()
+                            .setAuthor("GordFing", bot.Client.user.avatarURL({ dynamic: true }), "https://discord.com/api/oauth2/authorize?client_id=764227613001908275&permissions=8&scope=bot")
+                            .setTitle("MUSICA!")
+                            .setImage(song.image)
+                            .setDescription(`*Titulo:* **${song.title}**\n*Visualizações:* **${song.views}**\n*Avaliações:*\n👍 **${song.likes}** | 👎 **${song.dislikes}**\n\n*Canal:* **${song.channel}**\n*Duração:* **${song.seconds} segundo(s)**\n*Link:* **${song.url}**`)
+                            .setTimestamp()
+                            .setFooter(`Comando solicitado por: ${msg.author.tag}`)
+                            .setColor("#00FF00")
+                          );
+                        });
+
+                        disp.on("close", () => {
+                          msg.channel.send(new MessageEmbed()
+                            .setAuthor("GordFing", bot.Client.user.avatarURL({ dynamic: true }), "https://discord.com/api/oauth2/authorize?client_id=764227613001908275&permissions=8&scope=bot")
+                            .setTitle("MUSICA!")
+                            .setImage(song.image)
+                            .setDescription(`***Musica finalizada com sucesso!***\n\n*Use:* **${bot.Config.BOT_PREFIX}play [URL/NOME]**`)
+                            .setTimestamp()
+                            .setFooter(`Comando solicitado por: ${msg.author.tag}`)
+                            .setColor("#0000FF")
+                          );
+                        });
+                      } else if (r.emoji.name === "3️⃣") {
+                        m.delete();
+
+                        const songInfo = await pkg.Ytdl.getInfo(search["items"][2]["url"]);
+                        const song = {
+                          title: songInfo.videoDetails.title,
+                          views: songInfo.videoDetails.viewCount,
+                          likes: songInfo.videoDetails.likes,
+                          dislikes: songInfo.videoDetails.dislikes,
+                          channel: songInfo.videoDetails.author.name,
+                          seconds: songInfo.videoDetails.lengthSeconds,
+                          image: songInfo.videoDetails.thumbnails[songInfo.videoDetails.thumbnails.length - 1]["url"],
+                          url: songInfo.videoDetails.video_url
+                        };
+
+                        const disp = connect.play(pkg.Ytdl(search["items"][2]["url"], {
+                          filter: "audioonly",
+                          quality: "highestaudio",
+                        }));
+
+                        disp.on("start", () => {
+                          msg.delete()
+                          msg.channel.send(new MessageEmbed()
+                            .setAuthor("GordFing", bot.Client.user.avatarURL({ dynamic: true }), "https://discord.com/api/oauth2/authorize?client_id=764227613001908275&permissions=8&scope=bot")
+                            .setTitle("MUSICA!")
+                            .setImage(song.image)
+                            .setDescription(`*Titulo:* **${song.title}**\n*Visualizações:* **${song.views}**\n*Avaliações:*\n👍 **${song.likes}** | 👎 **${song.dislikes}**\n\n*Canal:* **${song.channel}**\n*Duração:* **${song.seconds} segundo(s)**\n*Link:* **${song.url}**`)
+                            .setTimestamp()
+                            .setFooter(`Comando solicitado por: ${msg.author.tag}`)
+                            .setColor("#00FF00")
+                          );
+                        });
+
+                        disp.on("close", () => {
+                          msg.channel.send(new MessageEmbed()
+                            .setAuthor("GordFing", bot.Client.user.avatarURL({ dynamic: true }), "https://discord.com/api/oauth2/authorize?client_id=764227613001908275&permissions=8&scope=bot")
+                            .setTitle("MUSICA!")
+                            .setImage(song.image)
+                            .setDescription(`***Musica finalizada com sucesso!***\n\n*Use:* **${bot.Config.BOT_PREFIX}play [URL/NOME]**`)
+                            .setTimestamp()
+                            .setFooter(`Comando solicitado por: ${msg.author.tag}`)
+                            .setColor("#0000FF")
+                          );
+                        });
+                      } else if (r.emoji.name === "4️⃣") {
+                        m.delete();
+
+                        const songInfo = await pkg.Ytdl.getInfo(search["items"][3]["url"]);
+                        const song = {
+                          title: songInfo.videoDetails.title,
+                          views: songInfo.videoDetails.viewCount,
+                          likes: songInfo.videoDetails.likes,
+                          dislikes: songInfo.videoDetails.dislikes,
+                          channel: songInfo.videoDetails.author.name,
+                          seconds: songInfo.videoDetails.lengthSeconds,
+                          image: songInfo.videoDetails.thumbnails[songInfo.videoDetails.thumbnails.length - 1]["url"],
+                          url: songInfo.videoDetails.video_url
+                        };
+
+                        const disp = connect.play(pkg.Ytdl(search["items"][3]["url"], {
+                          filter: "audioonly",
+                          quality: "highestaudio",
+                        }));
+
+                        disp.on("start", () => {
+                          msg.delete()
+                          msg.channel.send(new MessageEmbed()
+                            .setAuthor("GordFing", bot.Client.user.avatarURL({ dynamic: true }), "https://discord.com/api/oauth2/authorize?client_id=764227613001908275&permissions=8&scope=bot")
+                            .setTitle("MUSICA!")
+                            .setImage(song.image)
+                            .setDescription(`*Titulo:* **${song.title}**\n*Visualizações:* **${song.views}**\n*Avaliações:*\n👍 **${song.likes}** | 👎 **${song.dislikes}**\n\n*Canal:* **${song.channel}**\n*Duração:* **${song.seconds} segundo(s)**\n*Link:* **${song.url}**`)
+                            .setTimestamp()
+                            .setFooter(`Comando solicitado por: ${msg.author.tag}`)
+                            .setColor("#00FF00")
+                          );
+                        });
+
+                        disp.on("close", () => {
+                          msg.channel.send(new MessageEmbed()
+                            .setAuthor("GordFing", bot.Client.user.avatarURL({ dynamic: true }), "https://discord.com/api/oauth2/authorize?client_id=764227613001908275&permissions=8&scope=bot")
+                            .setTitle("MUSICA!")
+                            .setImage(song.image)
+                            .setDescription(`***Musica finalizada com sucesso!***\n\n*Use:* **${bot.Config.BOT_PREFIX}play [URL/NOME]**`)
+                            .setTimestamp()
+                            .setFooter(`Comando solicitado por: ${msg.author.tag}`)
+                            .setColor("#0000FF")
+                          );
+                        });
+                      } else if (r.emoji.name === "5️⃣") {
+                        m.delete();
+
+                        const songInfo = await pkg.Ytdl.getInfo(search["items"][4]["url"]);
+                        const song = {
+                          title: songInfo.videoDetails.title,
+                          views: songInfo.videoDetails.viewCount,
+                          likes: songInfo.videoDetails.likes,
+                          dislikes: songInfo.videoDetails.dislikes,
+                          channel: songInfo.videoDetails.author.name,
+                          seconds: songInfo.videoDetails.lengthSeconds,
+                          image: songInfo.videoDetails.thumbnails[songInfo.videoDetails.thumbnails.length - 1]["url"],
+                          url: songInfo.videoDetails.video_url
+                        };
+
+                        const disp = connect.play(pkg.Ytdl(search["items"][4]["url"], {
+                          filter: "audioonly",
+                          quality: "highestaudio",
+                        }));
+
+                        disp.on("start", () => {
+                          msg.delete()
+                          msg.channel.send(new MessageEmbed()
+                            .setAuthor("GordFing", bot.Client.user.avatarURL({ dynamic: true }), "https://discord.com/api/oauth2/authorize?client_id=764227613001908275&permissions=8&scope=bot")
+                            .setTitle("MUSICA!")
+                            .setImage(song.image)
+                            .setDescription(`*Titulo:* **${song.title}**\n*Visualizações:* **${song.views}**\n*Avaliações:*\n👍 **${song.likes}** | 👎 **${song.dislikes}**\n\n*Canal:* **${song.channel}**\n*Duração:* **${song.seconds} segundo(s)**\n*Link:* **${song.url}**`)
+                            .setTimestamp()
+                            .setFooter(`Comando solicitado por: ${msg.author.tag}`)
+                            .setColor("#00FF00")
+                          );
+                        });
+
+                        disp.on("close", () => {
+                          msg.channel.send(new MessageEmbed()
+                            .setAuthor("GordFing", bot.Client.user.avatarURL({ dynamic: true }), "https://discord.com/api/oauth2/authorize?client_id=764227613001908275&permissions=8&scope=bot")
+                            .setTitle("MUSICA!")
+                            .setImage(song.image)
+                            .setDescription(`***Musica finalizada com sucesso!***\n\n*Use:* **${bot.Config.BOT_PREFIX}play [URL/NOME]**`)
+                            .setTimestamp()
+                            .setFooter(`Comando solicitado por: ${msg.author.tag}`)
+                            .setColor("#0000FF")
+                          );
+                        });
+                      };
                     });
-
-                    disp.on("close", () => {
-                      bot.Client.setTimeout(() => {
-                        vChannel.leave()
-
-                        msg.channel.send(new MessageEmbed()
-                          .setAuthor("GordFing", bot.Client.user.avatarURL({ dynamic: true }), "https://discord.com/api/oauth2/authorize?client_id=764227613001908275&permissions=8&scope=bot")
-                          .setTitle("GORDFING")
-                          .setDescription(`Eu sai do canal de por inatividade!`)
-                          .setTimestamp()
-                          .setFooter(`Comando solicitado por: ${msg.author.tag}`)
-                          .setColor("#0000FF")
-                        );
-                      }, 60000);
-
-                      msg.channel.send(new MessageEmbed()
-                        .setAuthor("GordFing", bot.Client.user.avatarURL({ dynamic: true }), "https://discord.com/api/oauth2/authorize?client_id=764227613001908275&permissions=8&scope=bot")
-                        .setTitle("MUSICA!")
-                        .setImage(song.image)
-                        .setDescription(`***Musica finalizada com sucesso!***\n\n*Use:* **${bot.Config.BOT_PREFIX}search [pesq]**\n*Use:* **${bot.Config.BOT_PREFIX}play [link]**`)
-                        .setTimestamp()
-                        .setFooter(`Comando solicitado por: ${msg.author.tag}`)
-                        .setColor("#0000FF")
-                      );
-                    });
-                  } else if (r.emoji.name === "2️⃣") {
-                    m.delete();
-
-                    const songInfo = await pkg.Ytdl.getInfo(search["items"][1]["url"]);
-                    const song = {
-                      title: songInfo.videoDetails.title,
-                      views: songInfo.videoDetails.viewCount,
-                      likes: songInfo.videoDetails.likes,
-                      dislikes: songInfo.videoDetails.dislikes,
-                      channel: songInfo.videoDetails.author.name,
-                      seconds: songInfo.videoDetails.lengthSeconds,
-                      image: songInfo.videoDetails.thumbnails[songInfo.videoDetails.thumbnails.length-1]["url"],
-                      url: songInfo.videoDetails.video_url
-                    };
-
-                    const disp = connect.play(pkg.Ytdl(search["items"][1]["url"], {
-                      filter: "audioonly",
-                      quality: "highestaudio",
-                    }));
-
-                    disp.on("start", () => {
-                      msg.delete()
-                      msg.channel.send(new MessageEmbed()
-                        .setAuthor("GordFing", bot.Client.user.avatarURL({ dynamic: true }), "https://discord.com/api/oauth2/authorize?client_id=764227613001908275&permissions=8&scope=bot")
-                        .setTitle("MUSICA!")
-                        .setImage(song.image)
-                        .setDescription(`*Titulo:* **${song.title}**\n*Visualizações:* **${song.views}**\n*Avaliações:*\n👍 **${song.likes}** | 👎 **${song.dislikes}**\n\n*Canal:* **${song.channel}**\n*Duração:* **${song.seconds} segundo(s)**\n*Link:* **${song.url}**`)
-                        .setTimestamp()
-                        .setFooter(`Comando solicitado por: ${msg.author.tag}`)
-                        .setColor("#00FF00")
-                      );
-                    });
-
-                    disp.on("close", () => {
-                      msg.channel.send(new MessageEmbed()
-                        .setAuthor("GordFing", bot.Client.user.avatarURL({ dynamic: true }), "https://discord.com/api/oauth2/authorize?client_id=764227613001908275&permissions=8&scope=bot")
-                        .setTitle("MUSICA!")
-                        .setImage(song.image)
-                        .setDescription(`***Musica finalizada com sucesso!***\n\n*Use:* **${bot.Config.BOT_PREFIX}play [URL/NOME]**`)
-                        .setTimestamp()
-                        .setFooter(`Comando solicitado por: ${msg.author.tag}`)
-                        .setColor("#0000FF")
-                      );
-                    });
-                  } else if (r.emoji.name === "3️⃣") {
-                    m.delete();
-
-                    const songInfo = await pkg.Ytdl.getInfo(search["items"][2]["url"]);
-                    const song = {
-                      title: songInfo.videoDetails.title,
-                      views: songInfo.videoDetails.viewCount,
-                      likes: songInfo.videoDetails.likes,
-                      dislikes: songInfo.videoDetails.dislikes,
-                      channel: songInfo.videoDetails.author.name,
-                      seconds: songInfo.videoDetails.lengthSeconds,
-                      image: songInfo.videoDetails.thumbnails[songInfo.videoDetails.thumbnails.length-1]["url"],
-                      url: songInfo.videoDetails.video_url
-                    };
-
-                    const disp = connect.play(pkg.Ytdl(search["items"][2]["url"], {
-                      filter: "audioonly",
-                      quality: "highestaudio",
-                    }));
-
-                    disp.on("start", () => {
-                      msg.delete()
-                      msg.channel.send(new MessageEmbed()
-                        .setAuthor("GordFing", bot.Client.user.avatarURL({ dynamic: true }), "https://discord.com/api/oauth2/authorize?client_id=764227613001908275&permissions=8&scope=bot")
-                        .setTitle("MUSICA!")
-                        .setImage(song.image)
-                        .setDescription(`*Titulo:* **${song.title}**\n*Visualizações:* **${song.views}**\n*Avaliações:*\n👍 **${song.likes}** | 👎 **${song.dislikes}**\n\n*Canal:* **${song.channel}**\n*Duração:* **${song.seconds} segundo(s)**\n*Link:* **${song.url}**`)
-                        .setTimestamp()
-                        .setFooter(`Comando solicitado por: ${msg.author.tag}`)
-                        .setColor("#00FF00")
-                      );
-                    });
-
-                    disp.on("close", () => {
-                      msg.channel.send(new MessageEmbed()
-                        .setAuthor("GordFing", bot.Client.user.avatarURL({ dynamic: true }), "https://discord.com/api/oauth2/authorize?client_id=764227613001908275&permissions=8&scope=bot")
-                        .setTitle("MUSICA!")
-                        .setImage(song.image)
-                        .setDescription(`***Musica finalizada com sucesso!***\n\n*Use:* **${bot.Config.BOT_PREFIX}play [URL/NOME]**`)
-                        .setTimestamp()
-                        .setFooter(`Comando solicitado por: ${msg.author.tag}`)
-                        .setColor("#0000FF")
-                      );
-                    });
-                  } else if (r.emoji.name === "4️⃣") {
-                    m.delete();
-
-                    const songInfo = await pkg.Ytdl.getInfo(search["items"][3]["url"]);
-                    const song = {
-                      title: songInfo.videoDetails.title,
-                      views: songInfo.videoDetails.viewCount,
-                      likes: songInfo.videoDetails.likes,
-                      dislikes: songInfo.videoDetails.dislikes,
-                      channel: songInfo.videoDetails.author.name,
-                      seconds: songInfo.videoDetails.lengthSeconds,
-                      image: songInfo.videoDetails.thumbnails[songInfo.videoDetails.thumbnails.length-1]["url"],
-                      url: songInfo.videoDetails.video_url
-                    };
-
-                    const disp = connect.play(pkg.Ytdl(search["items"][3]["url"], {
-                      filter: "audioonly",
-                      quality: "highestaudio",
-                    }));
-
-                    disp.on("start", () => {
-                      msg.delete()
-                      msg.channel.send(new MessageEmbed()
-                        .setAuthor("GordFing", bot.Client.user.avatarURL({ dynamic: true }), "https://discord.com/api/oauth2/authorize?client_id=764227613001908275&permissions=8&scope=bot")
-                        .setTitle("MUSICA!")
-                        .setImage(song.image)
-                        .setDescription(`*Titulo:* **${song.title}**\n*Visualizações:* **${song.views}**\n*Avaliações:*\n👍 **${song.likes}** | 👎 **${song.dislikes}**\n\n*Canal:* **${song.channel}**\n*Duração:* **${song.seconds} segundo(s)**\n*Link:* **${song.url}**`)
-                        .setTimestamp()
-                        .setFooter(`Comando solicitado por: ${msg.author.tag}`)
-                        .setColor("#00FF00")
-                      );
-                    });
-
-                    disp.on("close", () => {
-                      msg.channel.send(new MessageEmbed()
-                        .setAuthor("GordFing", bot.Client.user.avatarURL({ dynamic: true }), "https://discord.com/api/oauth2/authorize?client_id=764227613001908275&permissions=8&scope=bot")
-                        .setTitle("MUSICA!")
-                        .setImage(song.image)
-                        .setDescription(`***Musica finalizada com sucesso!***\n\n*Use:* **${bot.Config.BOT_PREFIX}play [URL/NOME]**`)
-                        .setTimestamp()
-                        .setFooter(`Comando solicitado por: ${msg.author.tag}`)
-                        .setColor("#0000FF")
-                      );
-                    });
-                  } else if (r.emoji.name === "5️⃣") {
-                    m.delete();
-
-                    const songInfo = await pkg.Ytdl.getInfo(search["items"][4]["url"]);
-                    const song = {
-                      title: songInfo.videoDetails.title,
-                      views: songInfo.videoDetails.viewCount,
-                      likes: songInfo.videoDetails.likes,
-                      dislikes: songInfo.videoDetails.dislikes,
-                      channel: songInfo.videoDetails.author.name,
-                      seconds: songInfo.videoDetails.lengthSeconds,
-                      image: songInfo.videoDetails.thumbnails[songInfo.videoDetails.thumbnails.length-1]["url"],
-                      url: songInfo.videoDetails.video_url
-                    };
-
-                    const disp = connect.play(pkg.Ytdl(search["items"][4]["url"], {
-                      filter: "audioonly",
-                      quality: "highestaudio",
-                    }));
-
-                    disp.on("start", () => {
-                      msg.delete()
-                      msg.channel.send(new MessageEmbed()
-                        .setAuthor("GordFing", bot.Client.user.avatarURL({ dynamic: true }), "https://discord.com/api/oauth2/authorize?client_id=764227613001908275&permissions=8&scope=bot")
-                        .setTitle("MUSICA!")
-                        .setImage(song.image)
-                        .setDescription(`*Titulo:* **${song.title}**\n*Visualizações:* **${song.views}**\n*Avaliações:*\n👍 **${song.likes}** | 👎 **${song.dislikes}**\n\n*Canal:* **${song.channel}**\n*Duração:* **${song.seconds} segundo(s)**\n*Link:* **${song.url}**`)
-                        .setTimestamp()
-                        .setFooter(`Comando solicitado por: ${msg.author.tag}`)
-                        .setColor("#00FF00")
-                      );
-                    });
-
-                    disp.on("close", () => {
-                      msg.channel.send(new MessageEmbed()
-                        .setAuthor("GordFing", bot.Client.user.avatarURL({ dynamic: true }), "https://discord.com/api/oauth2/authorize?client_id=764227613001908275&permissions=8&scope=bot")
-                        .setTitle("MUSICA!")
-                        .setImage(song.image)
-                        .setDescription(`***Musica finalizada com sucesso!***\n\n*Use:* **${bot.Config.BOT_PREFIX}play [URL/NOME]**`)
-                        .setTimestamp()
-                        .setFooter(`Comando solicitado por: ${msg.author.tag}`)
-                        .setColor("#0000FF")
-                      );
-                    });
-                  };
-                });
+                  });
               });
             });
         } else {
@@ -383,6 +385,18 @@ bot.Client.on("message", async (msg) => {
               .setFooter(`Comando solicitado por: ${msg.author.tag}`)
               .setColor("#0000FF")
             )
+
+            bot.Client.setTimeout(() => {
+              vChannel.leave()
+              msg.channel.send(new MessageEmbed()
+                .setAuthor("GordFing", bot.Client.user.avatarURL({ dynamic: true }), "https://discord.com/api/oauth2/authorize?client_id=764227613001908275&permissions=8&scope=bot")
+                .setTitle("MUSICA!")
+                .setDescription(`***Eu sai do canal de voz por inatividade!***\n\n*Use:* **${bot.Config.BOT_PREFIX}play [URL/NOME]**`)
+                .setTimestamp()
+                .setFooter(`Comando solicitado por: ${msg.author.tag}`)
+                .setColor("#0000FF")
+              );
+            }, 1000 * 60 * 15);
           })
         }
       } else {
