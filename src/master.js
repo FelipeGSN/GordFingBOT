@@ -1,18 +1,18 @@
 // Require"s and Package"s
-const { MessageEmbed, VoiceChannel, GuildChannel } = require("discord.js");
-require("dotenv/config");
+const { MessageEmbed, VoiceChannel, GuildChannel } = require("discord.js")
+require("dotenv/config")
 
 const pkg = {
   Discord: require("discord.js"),
   Ytdl: require("ytdl-core"),
   Ytsr: require("ytsr"),
-};
+}
 
 // Bot
 const bot = {
   Client: new pkg.Discord.Client(),
   Config: process.env,
-};
+}
 
 // Code
 bot.Client.once("ready", (e) => {
@@ -25,7 +25,7 @@ bot.Client.once("ready", (e) => {
       `Servidores: ${bot.Client.guilds.cache.size}`,
       `Usuários: ${bot.Client.users.cache.size}`,
       `Canais: ${bot.Client.channels.cache.size}`
-    ];
+    ]
 
     const activityTypeArray = [
       "LISTENING",
@@ -33,29 +33,29 @@ bot.Client.once("ready", (e) => {
       "WATCHING"
     ]
 
-    const R1 = Math.floor(Math.random() * activityNameArray.length);
+    const R1 = Math.floor(Math.random() * activityNameArray.length)
     const R2 = Math.floor(Math.random() * activityTypeArray.length)
 
-    bot.Client.user.setStatus("dnd");
-    bot.Client.user.setAFK(false);
+    bot.Client.user.setStatus("dnd")
+    bot.Client.user.setAFK(false)
     bot.Client.user.setActivity({
       "name": activityNameArray[R1],
       "type": activityTypeArray[R2]
-    });
-  }, 4500);
-});
+    })
+  }, 4500)
+})
 
 // Async onMessage() function
 bot.Client.on("message", async (msg) => {
   // Ignore"s
-  if (msg.author.bot) return;
-  if (!msg.guild) return;
+  if (msg.author.bot) return
+  if (!msg.guild) return
 
   // [MUSIC] "gof!play [URL/NAME]" command
   if (msg.cleanContent.startsWith(bot.Config.BOT_PREFIX + "play")) {
-    const vChannel = msg.member.voice.channel;
-    const args = msg.content.split(" ").splice(1).join(" ");
-    const args2 = msg.content.trim().split(/ +/g);
+    const vChannel = msg.member.voice.channel
+    const args = msg.content.split(" ").splice(1).join(" ")
+    const args2 = msg.content.trim().split(/ +/g)
 
     // Verify"s
     if (vChannel) {
@@ -64,12 +64,12 @@ bot.Client.on("message", async (msg) => {
           msg.channel
             .send(`>>> **<@${msg.author.id}>**\n***Pesquisando...***`)
             .then(async (m) => {
-              const searchF1 = await pkg.Ytsr.getFilters(String(args));
-              const searchF = searchF1.get("Type").get("Video");
+              const searchF1 = await pkg.Ytsr.getFilters(String(args))
+              const searchF = searchF1.get("Type").get("Video")
               const search = await pkg.Ytsr(searchF.url, {
                 limit: 5,
                 safeSearch: true,
-              });
+              })
 
               m.edit(
                 new MessageEmbed()
@@ -96,17 +96,17 @@ bot.Client.on("message", async (msg) => {
                       return (
                         ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣"].includes(r.emoji.name) &&
                         u.id === msg.author.id
-                      );
-                    };
+                      )
+                    }
 
                     m.awaitReactions(filter, { max: 1 }).then(async (c) => {
-                      const r = c.first();
+                      const r = c.first()
                       const connect = await vChannel.join()
 
                       if (r.emoji.name === "1️⃣") {
-                        m.delete();
+                        m.delete()
 
-                        const songInfo = await pkg.Ytdl.getInfo(search["items"][0]["url"]);
+                        const songInfo = await pkg.Ytdl.getInfo(search["items"][0]["url"])
                         const song = {
                           title: songInfo.videoDetails.title,
                           views: songInfo.videoDetails.viewCount,
@@ -116,12 +116,12 @@ bot.Client.on("message", async (msg) => {
                           seconds: songInfo.videoDetails.lengthSeconds,
                           image: songInfo.videoDetails.thumbnails[songInfo.videoDetails.thumbnails.length - 1]["url"],
                           url: songInfo.videoDetails.video_url
-                        };
+                        }
 
                         const disp = connect.play(pkg.Ytdl(search["items"][0]["url"], {
                           filter: "audioonly",
                           quality: "highestaudio",
-                        }));
+                        }))
 
                         disp.on("start", () => {
                           msg.delete()
@@ -136,7 +136,7 @@ bot.Client.on("message", async (msg) => {
                             .setFooter(`Comando solicitado por: ${msg.author.tag}`)
                             .setColor("#00FF00")
                           )
-                        });
+                        })
 
                         disp.on("close", () => {
                           vChannel.guild.voice.selfDeaf(false)
@@ -149,7 +149,7 @@ bot.Client.on("message", async (msg) => {
                             .setTimestamp()
                             .setFooter(`Comando solicitado por: ${msg.author.tag}`)
                             .setColor("#0000FF")
-                          );
+                          )
 
                           bot.Client.setTimeout(() => {
                             vChannel.leave()
@@ -161,13 +161,13 @@ bot.Client.on("message", async (msg) => {
                               .setTimestamp()
                               .setFooter(`Comando solicitado por: ${msg.author.tag}`)
                               .setColor("#0000FF")
-                            );
-                          }, 1000 * 60 * 15);
-                        });
+                            )
+                          }, 1000 * 60 * 15)
+                        })
                       } else if (r.emoji.name === "2️⃣") {
-                        m.delete();
+                        m.delete()
 
-                        const songInfo = await pkg.Ytdl.getInfo(search["items"][1]["url"]);
+                        const songInfo = await pkg.Ytdl.getInfo(search["items"][1]["url"])
                         const song = {
                           title: songInfo.videoDetails.title,
                           views: songInfo.videoDetails.viewCount,
@@ -177,15 +177,17 @@ bot.Client.on("message", async (msg) => {
                           seconds: songInfo.videoDetails.lengthSeconds,
                           image: songInfo.videoDetails.thumbnails[songInfo.videoDetails.thumbnails.length - 1]["url"],
                           url: songInfo.videoDetails.video_url
-                        };
+                        }
 
                         const disp = connect.play(pkg.Ytdl(search["items"][1]["url"], {
                           filter: "audioonly",
                           quality: "highestaudio",
-                        }));
+                        }))
 
                         disp.on("start", () => {
                           msg.delete()
+                          vChannel.guild.voice.selfDeaf(true)
+
                           msg.channel.send(new MessageEmbed()
                             .setAuthor("GordFing", bot.Client.user.avatarURL({ dynamic: true }), "https://discord.com/api/oauth2/authorize?client_id=764227613001908275&permissions=8&scope=bot")
                             .setTitle("MUSICA!")
@@ -194,10 +196,12 @@ bot.Client.on("message", async (msg) => {
                             .setTimestamp()
                             .setFooter(`Comando solicitado por: ${msg.author.tag}`)
                             .setColor("#00FF00")
-                          );
-                        });
+                          )
+                        })
 
                         disp.on("close", () => {
+                          vChannel.guild.voice.selfDeaf(false)
+
                           msg.channel.send(new MessageEmbed()
                             .setAuthor("GordFing", bot.Client.user.avatarURL({ dynamic: true }), "https://discord.com/api/oauth2/authorize?client_id=764227613001908275&permissions=8&scope=bot")
                             .setTitle("MUSICA!")
@@ -206,7 +210,7 @@ bot.Client.on("message", async (msg) => {
                             .setTimestamp()
                             .setFooter(`Comando solicitado por: ${msg.author.tag}`)
                             .setColor("#0000FF")
-                          );
+                          )
 
                           bot.Client.setTimeout(() => {
                             vChannel.leave()
@@ -218,13 +222,13 @@ bot.Client.on("message", async (msg) => {
                               .setTimestamp()
                               .setFooter(`Comando solicitado por: ${msg.author.tag}`)
                               .setColor("#0000FF")
-                            );
-                          }, 1000 * 60 * 15);
-                        });
+                            )
+                          }, 1000 * 60 * 15)
+                        })
                       } else if (r.emoji.name === "3️⃣") {
-                        m.delete();
+                        m.delete()
 
-                        const songInfo = await pkg.Ytdl.getInfo(search["items"][2]["url"]);
+                        const songInfo = await pkg.Ytdl.getInfo(search["items"][2]["url"])
                         const song = {
                           title: songInfo.videoDetails.title,
                           views: songInfo.videoDetails.viewCount,
@@ -234,15 +238,17 @@ bot.Client.on("message", async (msg) => {
                           seconds: songInfo.videoDetails.lengthSeconds,
                           image: songInfo.videoDetails.thumbnails[songInfo.videoDetails.thumbnails.length - 1]["url"],
                           url: songInfo.videoDetails.video_url
-                        };
+                        }
 
                         const disp = connect.play(pkg.Ytdl(search["items"][2]["url"], {
                           filter: "audioonly",
                           quality: "highestaudio",
-                        }));
+                        }))
 
                         disp.on("start", () => {
                           msg.delete()
+                          vChannel.guild.voice.selfDeaf(true)
+
                           msg.channel.send(new MessageEmbed()
                             .setAuthor("GordFing", bot.Client.user.avatarURL({ dynamic: true }), "https://discord.com/api/oauth2/authorize?client_id=764227613001908275&permissions=8&scope=bot")
                             .setTitle("MUSICA!")
@@ -251,10 +257,12 @@ bot.Client.on("message", async (msg) => {
                             .setTimestamp()
                             .setFooter(`Comando solicitado por: ${msg.author.tag}`)
                             .setColor("#00FF00")
-                          );
-                        });
+                          )
+                        })
 
                         disp.on("close", () => {
+                          vChannel.guild.voice.selfDeaf(false)
+
                           msg.channel.send(new MessageEmbed()
                             .setAuthor("GordFing", bot.Client.user.avatarURL({ dynamic: true }), "https://discord.com/api/oauth2/authorize?client_id=764227613001908275&permissions=8&scope=bot")
                             .setTitle("MUSICA!")
@@ -263,7 +271,7 @@ bot.Client.on("message", async (msg) => {
                             .setTimestamp()
                             .setFooter(`Comando solicitado por: ${msg.author.tag}`)
                             .setColor("#0000FF")
-                          );
+                          )
 
                           bot.Client.setTimeout(() => {
                             vChannel.leave()
@@ -275,13 +283,13 @@ bot.Client.on("message", async (msg) => {
                               .setTimestamp()
                               .setFooter(`Comando solicitado por: ${msg.author.tag}`)
                               .setColor("#0000FF")
-                            );
-                          }, 1000 * 60 * 15);
-                        });
+                            )
+                          }, 1000 * 60 * 15)
+                        })
                       } else if (r.emoji.name === "4️⃣") {
-                        m.delete();
+                        m.delete()
 
-                        const songInfo = await pkg.Ytdl.getInfo(search["items"][3]["url"]);
+                        const songInfo = await pkg.Ytdl.getInfo(search["items"][3]["url"])
                         const song = {
                           title: songInfo.videoDetails.title,
                           views: songInfo.videoDetails.viewCount,
@@ -291,15 +299,17 @@ bot.Client.on("message", async (msg) => {
                           seconds: songInfo.videoDetails.lengthSeconds,
                           image: songInfo.videoDetails.thumbnails[songInfo.videoDetails.thumbnails.length - 1]["url"],
                           url: songInfo.videoDetails.video_url
-                        };
+                        }
 
                         const disp = connect.play(pkg.Ytdl(search["items"][3]["url"], {
                           filter: "audioonly",
                           quality: "highestaudio",
-                        }));
+                        }))
 
                         disp.on("start", () => {
                           msg.delete()
+                          vChannel.guild.voice.selfDeaf(true)
+
                           msg.channel.send(new MessageEmbed()
                             .setAuthor("GordFing", bot.Client.user.avatarURL({ dynamic: true }), "https://discord.com/api/oauth2/authorize?client_id=764227613001908275&permissions=8&scope=bot")
                             .setTitle("MUSICA!")
@@ -308,10 +318,12 @@ bot.Client.on("message", async (msg) => {
                             .setTimestamp()
                             .setFooter(`Comando solicitado por: ${msg.author.tag}`)
                             .setColor("#00FF00")
-                          );
-                        });
+                          )
+                        })
 
                         disp.on("close", () => {
+                          vChannel.guild.voice.selfDeaf(false)
+
                           msg.channel.send(new MessageEmbed()
                             .setAuthor("GordFing", bot.Client.user.avatarURL({ dynamic: true }), "https://discord.com/api/oauth2/authorize?client_id=764227613001908275&permissions=8&scope=bot")
                             .setTitle("MUSICA!")
@@ -320,7 +332,7 @@ bot.Client.on("message", async (msg) => {
                             .setTimestamp()
                             .setFooter(`Comando solicitado por: ${msg.author.tag}`)
                             .setColor("#0000FF")
-                          );
+                          )
 
                           bot.Client.setTimeout(() => {
                             vChannel.leave()
@@ -332,13 +344,13 @@ bot.Client.on("message", async (msg) => {
                               .setTimestamp()
                               .setFooter(`Comando solicitado por: ${msg.author.tag}`)
                               .setColor("#0000FF")
-                            );
-                          }, 1000 * 60 * 15);
-                        });
+                            )
+                          }, 1000 * 60 * 15)
+                        })
                       } else if (r.emoji.name === "5️⃣") {
-                        m.delete();
+                        m.delete()
 
-                        const songInfo = await pkg.Ytdl.getInfo(search["items"][4]["url"]);
+                        const songInfo = await pkg.Ytdl.getInfo(search["items"][4]["url"])
                         const song = {
                           title: songInfo.videoDetails.title,
                           views: songInfo.videoDetails.viewCount,
@@ -348,15 +360,17 @@ bot.Client.on("message", async (msg) => {
                           seconds: songInfo.videoDetails.lengthSeconds,
                           image: songInfo.videoDetails.thumbnails[songInfo.videoDetails.thumbnails.length - 1]["url"],
                           url: songInfo.videoDetails.video_url
-                        };
+                        }
 
                         const disp = connect.play(pkg.Ytdl(search["items"][4]["url"], {
                           filter: "audioonly",
                           quality: "highestaudio",
-                        }));
+                        }))
 
                         disp.on("start", () => {
                           msg.delete()
+                          vChannel.guild.voice.selfDeaf(true)
+
                           msg.channel.send(new MessageEmbed()
                             .setAuthor("GordFing", bot.Client.user.avatarURL({ dynamic: true }), "https://discord.com/api/oauth2/authorize?client_id=764227613001908275&permissions=8&scope=bot")
                             .setTitle("MUSICA!")
@@ -365,10 +379,12 @@ bot.Client.on("message", async (msg) => {
                             .setTimestamp()
                             .setFooter(`Comando solicitado por: ${msg.author.tag}`)
                             .setColor("#00FF00")
-                          );
-                        });
+                          )
+                        })
 
                         disp.on("close", () => {
+                          vChannel.guild.voice.selfDeaf(false)
+
                           msg.channel.send(new MessageEmbed()
                             .setAuthor("GordFing", bot.Client.user.avatarURL({ dynamic: true }), "https://discord.com/api/oauth2/authorize?client_id=764227613001908275&permissions=8&scope=bot")
                             .setTitle("MUSICA!")
@@ -377,7 +393,7 @@ bot.Client.on("message", async (msg) => {
                             .setTimestamp()
                             .setFooter(`Comando solicitado por: ${msg.author.tag}`)
                             .setColor("#0000FF")
-                          );
+                          )
 
                           bot.Client.setTimeout(() => {
                             vChannel.leave()
@@ -389,16 +405,16 @@ bot.Client.on("message", async (msg) => {
                               .setTimestamp()
                               .setFooter(`Comando solicitado por: ${msg.author.tag}`)
                               .setColor("#0000FF")
-                            );
-                          }, 1000 * 60 * 15);
-                        });
-                      };
-                    });
-                  });
-              });
-            });
+                            )
+                          }, 1000 * 60 * 15)
+                        })
+                      }
+                    })
+                  })
+              })
+            })
         } else {
-          const args = msg.content.trim().split(/ +/g);
+          const args = msg.content.trim().split(/ +/g)
           const connect = await vChannel.join()
           const songInfo = await pkg.Ytdl.getInfo(args[1])
           const song = {
@@ -410,15 +426,17 @@ bot.Client.on("message", async (msg) => {
             seconds: songInfo.videoDetails.lengthSeconds,
             image: songInfo.videoDetails.thumbnails[songInfo.videoDetails.thumbnails.length-1]["url"],
             url: songInfo.videoDetails.video_url
-          };
+          }
 
           const disp = connect.play(pkg.Ytdl(args[1], {
             filter: "audioonly",
             quality: "highestaudio",
-          }));
+          }))
 
           disp.on("start", () => {
             msg.delete()
+            vChannel.guild.voice.selfDeaf(true)
+
             msg.channel.send(new MessageEmbed()
               .setAuthor("GordFing", bot.Client.user.avatarURL({ dynamic: true }), "https://discord.com/api/oauth2/authorize?client_id=764227613001908275&permissions=8&scope=bot")
               .setTitle("MUSICA!")
@@ -427,10 +445,12 @@ bot.Client.on("message", async (msg) => {
               .setTimestamp()
               .setFooter(`Comando solicitado por: ${msg.author.tag}`)
               .setColor("#00FF00")
-            );
-          });
+            )
+          })
 
           disp.on("close", () => {
+            vChannel.guild.voice.selfDeaf(false)
+
             msg.channel.send(new MessageEmbed()
               .setAuthor("GordFing", bot.Client.user.avatarURL({ dynamic: true }), "https://discord.com/api/oauth2/authorize?client_id=764227613001908275&permissions=8&scope=bot")
               .setTitle("MUSICA!")
@@ -450,8 +470,8 @@ bot.Client.on("message", async (msg) => {
                 .setTimestamp()
                 .setFooter(`Comando solicitado por: ${msg.author.tag}`)
                 .setColor("#0000FF")
-              );
-            }, 1000 * 60 * 15);
+              )
+            }, 1000 * 60 * 15)
           })
         }
       } else {
@@ -463,7 +483,7 @@ bot.Client.on("message", async (msg) => {
             .setTimestamp()
             .setFooter(`Comando solicitado por: ${msg.author.tag}`)
             .setColor("#FF0000")
-        );
+        )
       }
     } else {
       msg.channel.send(
@@ -474,13 +494,13 @@ bot.Client.on("message", async (msg) => {
           .setTimestamp()
           .setFooter(`Comando solicitado por: ${msg.author.tag}`)
           .setColor("#FF0000")
-      );
+      )
     }
   } else if (msg.content == bot.Config.BOT_PREFIX + "join") {
-    const vChannel = msg.member.voice.channel;
+    const vChannel = msg.member.voice.channel
 
     if (vChannel) {
-      await vChannel.join();
+      await vChannel.join()
 
       msg.channel.send(new MessageEmbed()
         .setAuthor("GordFing", bot.Client.user.avatarURL({ dynamic: true }), "https://discord.com/api/oauth2/authorize?client_id=764227613001908275&permissions=8&scope=bot")
@@ -489,7 +509,7 @@ bot.Client.on("message", async (msg) => {
         .setTimestamp()
         .setFooter(`Comando solicitado por: ${msg.author.tag}`)
         .setColor("#00FF00")
-      );
+      )
 
     } else {
       msg.channel.send(new MessageEmbed()
@@ -499,13 +519,13 @@ bot.Client.on("message", async (msg) => {
         .setTimestamp()
         .setFooter(`Comando solicitado por: ${msg.author.tag}`)
         .setColor("#FF0000")
-      );
-    };
+      )
+    }
 
     // [MUSIC] "gof!stop" command
   } else if (msg.content == bot.Config.BOT_PREFIX + "stop" || msg.content == bot.Config.BOT_PREFIX + "leave") {
-    const vChannel = msg.member.voice.channel;
-    vChannel.leave();
+    const vChannel = msg.member.voice.channel
+    vChannel.leave()
 
     // [MUSIC] "gof!search" command
   } else if (msg.content.startsWith(bot.Config.BOT_PREFIX + "search")) {
@@ -513,11 +533,11 @@ bot.Client.on("message", async (msg) => {
 
     if (!args == "") {
       msg.channel.send(`>>> <@${msg.author.id}>\n***Pesquisando...***`).then(async (m) => {
-        const searchF1 = await pkg.Ytsr.getFilters(String(args));
-        const searchF = searchF1.get("Type").get("Video");
+        const searchF1 = await pkg.Ytsr.getFilters(String(args))
+        const searchF = searchF1.get("Type").get("Video")
         const search = await pkg.Ytsr(searchF.url, {
           limit: 5,
-        });
+        })
 
         m.edit(new MessageEmbed()
           .setAuthor("GordFing", bot.Client.user.avatarURL({ dynamic: true }), "https://discord.com/api/oauth2/authorize?client_id=764227613001908275&permissions=8&scope=bot")
@@ -530,7 +550,7 @@ bot.Client.on("message", async (msg) => {
           .setTimestamp()
           .setFooter(`Comando solicitado por: ${msg.author.tag}`)
           .setColor("#00FF00")
-        );
+        )
       })
     } else {
       msg.channel.send(new MessageEmbed()
@@ -540,9 +560,9 @@ bot.Client.on("message", async (msg) => {
         .setTimestamp()
         .setFooter(`Comando solicitado por: ${msg.author.tag}`)
         .setColor("#FF0000")
-      );
-    };
-  };
+      )
+    }
+  }
 
   // [UTILS] "gof!ping" command
   if (msg.content == bot.Config.BOT_PREFIX + "ping") {
@@ -555,11 +575,11 @@ bot.Client.on("message", async (msg) => {
           .setTimestamp()
           .setFooter(`Comando solicitado por: ${msg.author.tag}`)
           .setColor("#00FF00")
-        );
-      });
-  };
-});
+        )
+      })
+  }
+})
 
 // Login and Other"s
-console.clear();
-bot.Client.login(bot.Config.BOT_TOKEN);
+console.clear()
+bot.Client.login(bot.Config.BOT_TOKEN)
