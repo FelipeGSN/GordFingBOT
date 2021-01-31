@@ -36,7 +36,7 @@ bot.Client.once("ready", (e) => {
     const R1 = Math.floor(Math.random() * activityNameArray.length);
     const R2 = Math.floor(Math.random() * activityTypeArray.length)
 
-    bot.Client.user.setStatus("idle");
+    bot.Client.user.setStatus("dnd");
     bot.Client.user.setAFK(false);
     bot.Client.user.setActivity({
       "name": activityNameArray[R1],
